@@ -9,9 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { readFileSync } from 'fs';
 import {join} from 'path';
 
-const username = encodeURIComponent("db_rw_user");
-const password = encodeURIComponent("xBi6xC9al0aqt6Hv");
-
 
 @Module({
   imports: [UsersModule, FilmsModule, CommentsModule, 
