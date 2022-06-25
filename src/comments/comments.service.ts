@@ -1,26 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Comment } from './entities/comment.entity';
+import { v4 as uuidv4 } from 'uuid';  
 
 @Injectable()
 export class CommentsService {
-  create(createCommentDto: CreateCommentDto) {
-    return 'This action adds a new comment';
+  createComment(createCommentDto: CreateCommentDto) {
+    const comment= new Comment();
+
+    comment.commentId = uuidv4();
+    comment.comment = createCommentDto.comment;
+    comment.userId = createCommentDto.userId;
+    comment.filmId = createCommentDto.filmId;
+    return comment.save();
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  getCommentsByFilm(filmId:string) {
+    return Comment.findOne({ where: { filmId } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  getAllComments() {
+    return Comment.find();
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  getComment(id: string) {
+    return Comment.findOneByOrFail({ "commentId":id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async updateComment(id: string, updateCommentDto: UpdateCommentDto) {
+    const updateObj = {};
+    if(updateCommentDto.comment) updateObj['comment'] = updateCommentDto.comment;
+
+    const comment = await Comment.update(id
+    , {
+      ...updateObj,
+      updatedAt: new Date().toISOString(),
+    });
+
+    return comment;
+  }
+
+  deleteComment(id: string) {
+    return Comment.update(
+      id,
+     {
+      deleted: true
+    });
   }
 }
