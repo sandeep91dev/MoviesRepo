@@ -21,7 +21,10 @@ export class CreateUserDto {
       email: string;
 
     @ApiProperty({description:'Role of the user , it can be either of member or reviewer or admin'})
-    role: UserRoles;  
+    role: UserRoles;
+
+    @ApiProperty({description:'Role of the user , it can be either of member or reviewer or admin'})
+    isReviewer: boolean;
 
     @ApiProperty({
         description: 'Users favorite movies, genres etc',

@@ -1,7 +1,6 @@
 enum UserRoles {
-    ADMIN = 'admin',
-    MEMBER = 'member',
-    REVIEWER = 'reviewer',
+    ADMIN = '0',
+    MEMBER = '1',
   }
   
 export { UserRoles };

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { v4 as uuidv4 } from 'uuid';  
 
 @Injectable()
 export class UsersService {
@@ -15,9 +15,12 @@ export class UsersService {
   ): Promise<User> {
     const user = new User();
 
+    user.userId = uuidv4();
     user.name = userRegister.name;
     user.email = userRegister.email;
     user.password = userRegister.password;
+    if(userRegister.role) user.role = userRegister.role;
+    if(userRegister.isReviewer) user.isReviewer = userRegister.isReviewer;
 
     return await user.save();
     
@@ -29,6 +32,10 @@ export class UsersService {
 
   async getAllUsers(): Promise<User[] | []> {
     return User.find({where:{deleted:false}});
+  }
+
+  async getUserById(userId: string): Promise<User | undefined> {
+    return User.findOneBy({ userId});
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto) {

@@ -4,20 +4,23 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    PrimaryGeneratedColumn,
+    PrimaryColumn,
     UpdateDateColumn,
     ObjectIdColumn,
   } from 'typeorm';
   import * as bcrypt from 'bcrypt';
   import { ApiProperty } from '@nestjs/swagger';
   import { UserRoles } from '../../utils/enums/users.enum';
+  import { ObjectId } from 'mongodb';
   
   @Entity({ name: 'users' })
   export class User extends BaseEntity {
     @ApiProperty({ description: 'Primary key as User ID', example: 'abcd123' })
-    @PrimaryGeneratedColumn('uuid')
     @ObjectIdColumn()
-    id: string;
+    _id: ObjectId;
+
+    @PrimaryColumn()
+    userId:string
   
     @ApiProperty({ description: 'User name', example: 'Jhon Doe' })
     @Column()
@@ -39,12 +42,12 @@ import {
     @Column()
     description:string;
 
-    // @ApiProperty({
-    //     description: 'Identifes if a user allowed to review',
-    //     example: 'true',
-    // })
-    // @Column('boolean', {default: false})
-    // isReviewer:boolean = false;
+    @ApiProperty({
+        description: 'Identifes if a user allowed to review',
+        example: 'true',
+    })
+    @Column('boolean', {default: false})
+    isReviewer:boolean = false;
 
     @Column('boolean', {default: false})
     deleted:boolean = false;

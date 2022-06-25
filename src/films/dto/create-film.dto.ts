@@ -1,11 +1,27 @@
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsArray, IsNotEmpty, Length } from 'class-validator';
 
-export class CreateFilmDto {
-      @IsNotEmpty()
-      @Length(3, 255)
-      question: string;
-    
+export class CreateFilmDto {  
+    @IsNotEmpty()
+    @Length(3, 50)
+    name: string;
+  
+    @IsNotEmpty()
+    releaseDate: Date;
 
-      @IsNotEmpty()
-      quizId: number;
+    @IsNotEmpty()
+    @Length(3, 255)
+    description:string;
+
+    @IsNotEmpty()
+    @Length(3, 255)
+    photo:string
+
+    @IsNotEmpty()
+    @Length(3, 50)
+    country:string
+
+    @IsNotEmpty()
+    @IsArray()
+    genre:Array<string>
+  
 }

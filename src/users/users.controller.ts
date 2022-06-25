@@ -4,7 +4,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import {
-ApiBadRequestResponse,
 ApiCreatedResponse,
 ApiTags
 } from '@nestjs/swagger';
@@ -30,9 +29,14 @@ export class UsersController {
     return await this.usersService.doUserRegistration(userRegister);
   }
 
-  @Get('/all')
+  @Get('')
   findAll() {
     return this.usersService.getAllUsers();
+  }
+
+  @Get(':id')
+  getFilm(@Param('id') id: string) {
+    return this.usersService.getUserById(id);
   }
 
   @Get('/email/:email')
