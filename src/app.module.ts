@@ -8,24 +8,14 @@ import { CommentsModule } from './comments/comments.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { readFileSync } from 'fs';
 import {join} from 'path';
+import { typeOrmAsyncConfig } from './config/typeorm.config';
 
 
 @Module({
   imports: [UsersModule, FilmsModule, CommentsModule, 
     ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env`, isGlobal:true }),
-    TypeOrmModule.forRoot({
-    type: 'mongodb',
-    url: `mongodb+srv://${encodeURIComponent(process.env.DB_USER)}:${encodeURIComponent(process.env.DB_PASSWORD)}@moviescluster.21kpkhm.mongodb.net/?retryWrites=true&w=majority`,
-    // port: 27017,
-    //  ssl:true,
-    // sslCert:'',
-    // sslKey:'',
-    database: 'movies',
-    entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-    synchronize: true,
-    logging:true
-  })],
-  controllers: [AppController],
-  providers: [AppService],
-})
+    TypeOrmModule.forRootAsync(typeOrmAsyncConfig)],
+    controllers: [AppController],
+    providers: [AppService],
+  })
 export class AppModule {}
