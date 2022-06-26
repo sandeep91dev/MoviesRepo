@@ -12,7 +12,7 @@ import {join} from 'path';
 
 @Module({
   imports: [UsersModule, FilmsModule, CommentsModule, 
-    ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }),
+    ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env`, isGlobal:true }),
     TypeOrmModule.forRoot({
     type: 'mongodb',
     url: `mongodb+srv://${encodeURIComponent(process.env.DB_USER)}:${encodeURIComponent(process.env.DB_PASSWORD)}@moviescluster.21kpkhm.mongodb.net/?retryWrites=true&w=majority`,
