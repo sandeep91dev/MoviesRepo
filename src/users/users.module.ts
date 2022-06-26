@@ -14,5 +14,6 @@ import { AuthService } from './auth.service';
   imports: [TypeOrmModule.forFeature([UserRepository]),PassportModule, JwtModule.registerAsync(jwtConfig)],
   controllers: [UsersController],
   providers: [UsersService, AuthService, LocalStrategy, JwtStrategy],
+  exports:[UsersService]
 })
 export class UsersModule {}

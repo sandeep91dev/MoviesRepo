@@ -14,6 +14,10 @@ ApiBearerAuth
 } from '@nestjs/swagger';
 import { SETTINGS } from 'src/utils/app.utils';
 import { UserExceptionFilter } from 'src/utils/exception-filters/user.exception.filter';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/guards/roles.decorator';
+import { UserRoles } from 'src/utils/enums/users.enum';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @ApiTags('User')
@@ -41,33 +45,44 @@ export class UsersController {
     return this.authService.generateToken(req.user);
   }
 
+  @UseGuards(AuthGuard('jwt'),RolesGuard)
+  @Roles(UserRoles.ADMIN)
   @Get('')
   findAll() {
     return this.usersService.getAllUsers();
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'),RolesGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.MEMBER)
   @Get('current')
   user(@Request() req): Promise<any> {
     return req.user;
   }
 
+  @UseGuards(AuthGuard('jwt'),RolesGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.MEMBER)
   @Get(':id')
   getUserById(@Param('id') id: string) {
     return this.usersService.getUserById(id);
   }
 
+  @UseGuards(AuthGuard('jwt'),RolesGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.MEMBER)
   @Get('/email/:email')
   getUserByEmail(@Param('email') email: string) {
     return this.usersService.getUserByEmail(email);
   }
 
+  @UseGuards(AuthGuard('jwt'),RolesGuard)
+  @Roles(UserRoles.ADMIN, UserRoles.MEMBER)
   @Patch(':id')
   updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard('jwt'),RolesGuard)
+  @Roles(UserRoles.ADMIN)
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
