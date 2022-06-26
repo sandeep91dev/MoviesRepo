@@ -30,7 +30,7 @@ import {
       return {
         access_token: this.jwtService.sign({
           name: user.name,
-          sub: user.id,
+          sub: user.userId,
         }),
       };
     }
