@@ -3,12 +3,15 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { MvloggingService } from 'src/utils/mvlogging/mvlogging.service';
 
 @Injectable()
+//TODO: Implement error handling, add logs appropriately, add unit tests
 export class UsersService {
 
-  constructor(
-  ){}
+  constructor(private readonly logger:MvloggingService){
+    this.logger.setContext(UsersService.name);
+  }
 
   async doUserRegistration(
     userRegister: CreateUserDto,
@@ -43,13 +46,23 @@ export class UsersService {
     const updateObj = {};
     if(updateUserDto.name) updateObj['name'] = updateUserDto.name;
     if(updateUserDto.description) updateObj['description'] = updateUserDto.description;
-    const user = await User.update(id
-    , {
-      ...updateObj,
-      updatedAt: new Date(),
-    });
 
-    return user;
+    if(Object.keys(updateObj).length>0){
+      this.logger.debug("Update user params "+JSON.stringify(updateObj));
+      await User.update(id
+      , {
+        ...updateObj,
+        updatedAt: new Date(),
+      });
+      this.logger.debug("Update user successful!");
+      return "Update user successful!";
+    }else{
+      this.logger.debug("Nothing to update!")
+      return "Nothing to update!";;
+    }
+    
+
+
     
   }
 

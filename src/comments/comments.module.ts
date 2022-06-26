@@ -4,11 +4,12 @@ import { CommentsController } from './comments.controller';
 import { CommentsRepository } from './comments.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
-import { JwtStrategy } from 'src/guards/jwt.auth.strategy';
+import { MvloggingModule } from 'src/utils/mvlogging/mvlogging.module';
+import { MvloggingService } from 'src/utils/mvlogging/mvlogging.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CommentsRepository])],
+  imports: [TypeOrmModule.forFeature([CommentsRepository]),MvloggingModule],
   controllers: [CommentsController],
-  providers: [CommentsService, UsersService]
+  providers: [CommentsService, UsersService, MvloggingService]
 })
 export class CommentsModule {}

@@ -4,10 +4,14 @@ import { UpdateFilmDto } from './dto/update-film.dto';
 import { Film } from './entities/film.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { CommentsService } from '../comments/comments.service';
+import { MvloggingService } from 'src/utils/mvlogging/mvlogging.service';
 
 @Injectable()
+//TODO: Implement error handling, add logs, add unit tests
 export class FilmsService {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(private readonly commentsService: CommentsService, private readonly logger:MvloggingService) {
+    this.logger.setContext(FilmsService.name);
+  }
 
   async createFilm(createFilmDto: CreateFilmDto) {
     const film = new Film();
@@ -69,12 +73,16 @@ export class FilmsService {
     } 
     console.log("Update Obj", updateObj);
 
-    const film = await Film.update({"filmId":id},{
-      ...updateObj,
-      updatedAt: Date.now()
-    });
+    if(Object.keys(updateObj).length>0){
+      await Film.update({"filmId":id},{
+        ...updateObj,
+        updatedAt: Date.now()
+      });
 
-    return film;
+      return "Update film successful!";
+    }else{
+      return "Nothing to update"
+    }
   }
 
   deleteFilm(filmId: string) {

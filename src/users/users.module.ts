@@ -9,11 +9,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../guards/jwt.auth.strategy';
 import { jwtConfig } from '../config/jwt.config';
 import { AuthService } from './auth.service';
+import { MvloggingModule } from 'src/utils/mvlogging/mvlogging.module';
+import { MvloggingService } from 'src/utils/mvlogging/mvlogging.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserRepository]),PassportModule, JwtModule.registerAsync(jwtConfig)],
+  imports: [TypeOrmModule.forFeature([UserRepository]),PassportModule, JwtModule.registerAsync(jwtConfig), MvloggingModule],
   controllers: [UsersController],
-  providers: [UsersService, AuthService, LocalStrategy, JwtStrategy],
+  providers: [UsersService, AuthService, LocalStrategy, JwtStrategy, MvloggingService],
   exports:[UsersService]
 })
 export class UsersModule {}
