@@ -1,11 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters, UseGuards, Request} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginDto } from './dto/login.dto';
 import { User } from './entities/user.entity';
+import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { JwtAuthGuard } from 'src/guards/jwt.auth.guard';
+import { AuthService } from 'src/users/auth.service';
 import {
 ApiCreatedResponse,
-ApiTags
+ApiTags,
+ApiBearerAuth
 } from '@nestjs/swagger';
 import { SETTINGS } from 'src/utils/app.utils';
 import { UserExceptionFilter } from 'src/utils/exception-filters/user.exception.filter';
@@ -15,7 +20,8 @@ import { UserExceptionFilter } from 'src/utils/exception-filters/user.exception.
 @Controller('users')
 @UseFilters(new UserExceptionFilter())
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService,
+    private readonly authService: AuthService) {}
 
   @Post('/register')
   @ApiCreatedResponse({
@@ -29,13 +35,26 @@ export class UsersController {
     return await this.usersService.doUserRegistration(userRegister);
   }
 
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req, @Body() loginDto: LoginDto): Promise<any> {
+    return this.authService.generateToken(req.user);
+  }
+
   @Get('')
   findAll() {
     return this.usersService.getAllUsers();
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('current')
+  user(@Request() req): Promise<any> {
+    return req.user;
+  }
+
   @Get(':id')
-  getFilm(@Param('id') id: string) {
+  getUserById(@Param('id') id: string) {
     return this.usersService.getUserById(id);
   }
 

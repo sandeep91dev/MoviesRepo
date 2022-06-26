@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { v4 as uuidv4 } from 'uuid';  
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UsersService {
@@ -27,6 +27,7 @@ export class UsersService {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
+    console.log("User")
     return User.findOne({ where: { email } });
   }
 
