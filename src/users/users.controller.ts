@@ -10,7 +10,8 @@ import { AuthService } from 'src/users/auth.service';
 import {
 ApiCreatedResponse,
 ApiTags,
-ApiBearerAuth
+ApiBearerAuth,
+ApiOkResponse
 } from '@nestjs/swagger';
 import { SETTINGS } from 'src/utils/app.utils';
 import { UserExceptionFilter } from 'src/utils/exception-filters/user.exception.filter';
@@ -39,6 +40,9 @@ export class UsersController {
     return await this.usersService.doUserRegistration(userRegister);
   }
 
+  @ApiOkResponse({
+    description: 'Returns AccessToken which should be passed to subsequent calls',
+  })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Body() loginDto: LoginDto): Promise<any> {
