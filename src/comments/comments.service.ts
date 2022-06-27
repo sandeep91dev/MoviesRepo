@@ -41,7 +41,7 @@ export class CommentsService {
     if(updateCommentDto.comment) updateObj['comment'] = updateCommentDto.comment;
 
     if(Object.keys(updateObj).length>0){
-      await Comment.update(id
+      await Comment.update({"commentId":id}
         , {
           ...updateObj,
           updatedAt: new Date().toISOString(),
