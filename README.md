@@ -62,7 +62,7 @@ $ npm run test:cov
 
 ## SWagger UI
 
-Check swagger api diffintions at http://localhost:3000/api
+Check swagger api diffintions at http://localhost:3000/api for local and https://films-review.herokuapp.com/api for live api
 
 ## Support
 
