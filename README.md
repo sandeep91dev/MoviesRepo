@@ -64,11 +64,37 @@ $ npm run test:cov
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+## Seed data
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Locate src/database/seeder/seeder.service.ts
+Modify data constats appropriately with your seed data and save
+
+```bash
+# run seeding
+npm run seed OPTION (Options are user,film,comment)
+
+# example
+npm run seed user
+```
+
+## Migrations
+
+Migrations may not work as there are some config issues
+
+```bash
+# generate skeleton
+npm run migration:generate
+
+# create migration
+npm run migration:create
+
+# run migration - update db
+npm run migration:run
+
+# revert migration
+npm run migration:revert
+
+```
 
 ## License
 
