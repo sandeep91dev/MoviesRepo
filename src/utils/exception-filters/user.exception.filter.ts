@@ -11,7 +11,7 @@ export class UserExceptionFilter implements ExceptionFilter {
     
     //Handle exceptions raised from mongodb
     if (exception.code && exception.code === 11000) {
-        response.status(400).json({ message: 'User already exists.' });
+        response.status(400).json({ message: 'Record already exists.' });
       } else {
         response.status(500).json({ message: 'Internal Server error.' });
       }
