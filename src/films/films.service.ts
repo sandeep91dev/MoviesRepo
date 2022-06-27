@@ -5,6 +5,7 @@ import { Film } from './entities/film.entity';
 import { v4 as uuidv4 } from 'uuid';
 import { CommentsService } from '../comments/comments.service';
 import { MvloggingService } from 'src/utils/mvlogging/mvlogging.service';
+import { Ratings } from 'src/utils/enums/ratings.enum';
 
 @Injectable()
 //TODO: Implement error handling, add logs, add unit tests
@@ -49,6 +50,8 @@ export class FilmsService {
     if(updateFilmDto.releaseDate) updateObj['releaseDate'] = updateFilmDto.releaseDate;
 
     if(updateFilmDto.rating){
+      if(!(updateFilmDto.rating>=1 && updateFilmDto.rating<=5))
+        return "Rating must be between 1 & 5";
       const film = await this.getFilm(id, false);
       const rating = film.rating;
 
